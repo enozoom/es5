@@ -1,5 +1,5 @@
 # ES5 Enozoomstudio Framework 5
-
+![](https://raw.githubusercontent.com/enozoom/es5/master/public/uploads/5.01.png)
 ## ES5包结构
 
 ### App 开发包
