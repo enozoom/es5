@@ -80,7 +80,7 @@
 >>> css  
 >>> js  
 >>
->> uploads 上传文件夹
+>> uploads 上传文件夹  
 >> index.php 执行入口
 
 ## vendor 第三方及类加载器
