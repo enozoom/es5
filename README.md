@@ -8,18 +8,14 @@
 >> Controllers 控制器们  
 >>> Common 公共控制器文件夹  
 >>>> Min.php 处理css,js控制器类  
-
 >>> ESWeb 默认控制器文件  
 >>>> Home 默认控制器  
-
 >> Models 模型们  
 >> Views 视图们  
-
 >>> errors 错误页面  
 >>>> 403.php 非法访问  
 >>>> 404.php 页面不存在  
 >>>> 503.php 系统错误  
- 
 >>> html 前端视图们  
 >>>> esweb 与控制器文件夹对应  
 >>>>> home 与控制器类对应  
@@ -39,16 +35,13 @@
 >> Core 核心  
 >>> Cache 缓存 PSR实现类  
 >>> Controller 控制器基类  
-
 >>>> ControllerAbstract.php 控制器基类  
 >>>> DataController.php 数据API控制器基类  
 >>>> HtmlController.php HTML页面控制器基类  
-
 >>> Database 数据库类  
 >>> Hook 加载处理  
 >>>> HookInterface.php  
 >>>> SystemHook.php 框架、控制器初始化过程中的嵌入操作  
-
 >>> Http 请求响应  
 >>> Load 为控制器加载辅助类库  
 >>> Log 日志 PSR实现类  
@@ -70,7 +63,6 @@
 ## logs 日志
 
 > logs  
-> 
 >> alert 报警级别  
 >> debug 调试级别  
 >> error 错误级别  
