@@ -8,9 +8,9 @@ class Load
 {
     use InjectionTrait;
     
-    private $dir_model   = 'models/';
-    private $dir_view    = 'views/';
-    private $dir_library = 'libraries/';
+    private $dir_model   = 'Models';
+    private $dir_view    = 'Views';
+    private $dir_library = 'Libraries';
     
     /**
      * 动态加载一个可以在前台使用的方法
@@ -44,8 +44,8 @@ class Load
         empty($alias) && $alias = $clsName;
         if(!property_exists(ControllerAbstract::getInstance(),$alias)){
             foreach( [APPPATH,SYSPATH] as $path ){
-                if( file_exists( $file = $path.$this->dir_library.str_replace('\\','/',$cls).'.php' ) ){
-                    $cls = str_replace($clsName, ucfirst($clsName), substr(str_replace('/', '\\', $file),0,-4) );
+                if( file_exists( $path.$this->dir_library.'/'.str_replace('\\','/',$cls).'.php' ) ){
+                    $cls = implode('\\', [basename($path),$this->dir_library,ucfirst($cls)]);
                     $this->Ctrl()->$alias = new $cls();
                     break;
                 }
@@ -59,9 +59,10 @@ class Load
     {
         empty($alias) && $alias = $cls;
         if(!property_exists(ControllerAbstract::getInstance(),$alias)){
-            $cls = str_replace('/','\\',APPPATH.$this->dir_model).ucfirst($cls);
+            $cls = implode('\\', [basename(APPPATH),$this->dir_model,ucfirst($cls)]);
+            
             $_model = new $cls();
-            is_subclass_of($_model,'\es\core\Model\ModelAbstract') || $this->tpl_err($cls.'非ES_model子类');
+            is_subclass_of($_model,'\ES\core\Model\ModelAbstract') || $this->tpl_err($cls.'非ES_model子类');
             $this->Ctrl()->$alias = &$_model;
         }
         return $this;

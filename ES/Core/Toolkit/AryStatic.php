@@ -6,7 +6,7 @@ final class AryStatic{
      * @param array $keys
      * @param array $data
      */
-    public static function isRequired(int $keys,array $data=[]):bool{
+    public static function isRequired(array $keys,array $data=[]):bool{
         empty($data) && $data = $_POST;
         foreach($keys as $k)
         {

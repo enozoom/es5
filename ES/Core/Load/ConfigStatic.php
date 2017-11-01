@@ -2,7 +2,7 @@
 namespace ES\Core\Load;
 use ES\Core\Toolkit\FileStatic;
 /**
- * 读取配置文件参数
+ * 读取配置文件参数为全局变量$CONFIGS准备配置参数
  * @author Joe e@enozoom.com
  */
 

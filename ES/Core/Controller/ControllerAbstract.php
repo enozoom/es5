@@ -2,6 +2,7 @@
 namespace ES\Core\Controller;
 use ES\Core\Load\Load;
 use ES\Core\Toolkit\{Output,ConfigStatic};
+use ES\Core\Model\ModelAbstract;
 
 abstract class ControllerAbstract{
     private static $instance;
@@ -14,7 +15,7 @@ abstract class ControllerAbstract{
         $this->load = new Load();
         $this->output = new Output();
         isset($_SESSION) || session_start();
-        $this->cmdq = ConfigStatic::getConfigs('cmdq');
+        $this->cmdq = ConfigStatic::getConfigs('Cmdq');
     }
     
     public static function &getInstance():ControllerAbstract{
@@ -23,7 +24,7 @@ abstract class ControllerAbstract{
     
     public function closeDB(){
         foreach( get_object_vars($this) as $var=>$val ){
-            if($val instanceof \es\core\Model\ModelAbstract){
+            if($val instanceof ModelAbstract){
                 $this->$var->db->close();
                 break;
             }

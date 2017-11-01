@@ -1,8 +1,8 @@
 <?php
-namespace es\core\Database;
-use es\core\Toolkit\ConfigTrait;
+namespace ES\Core\Database;
+use ES\Core\Toolkit\ConfigStatic;
+
 class Mysql implements DatabaseInterface{
-    use ConfigTrait;
     protected $mysqli;
     protected static $instance;
     protected $last_query = '';
@@ -14,7 +14,7 @@ class Mysql implements DatabaseInterface{
     protected $port = 3306;
 
     public function __construct(){
-        $configs = $this->getConfigs('database');
+        $configs = ConfigStatic::getConfigs('Database');
         foreach( get_class_vars(__CLASS__) as $var=>$val)
         {
             empty($configs->$var) || $this->$var = $configs->$var;

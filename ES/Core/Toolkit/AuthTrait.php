@@ -1,9 +1,7 @@
 <?php
 namespace ES\Core\Toolkit;
 
-use ES\Toolkit\ConfigTrait;
 trait AuthTrait{
-    use ConfigTrait;
     /**
      * 生成签名
      * @param string $str

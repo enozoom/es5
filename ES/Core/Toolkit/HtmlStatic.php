@@ -36,12 +36,13 @@ final class HtmlStatic{
 * @param bool $noindex    页面是否让让搜索引擎抓取
 * @return string HTMLString
 */
-    public static function generate_html5_head(string $title,
-                                                                         string $css='',
-                                                                         string $description='',
-                                                                         $keywords='',
-                                                                         $viewport=FALSE,
-                                                                         $noindex=FALSE):string
+    public static function generate_html5_head(
+        string $title,
+        string $css='',
+        string $description='',
+        $keywords='',
+        $viewport=FALSE,
+        $noindex=FALSE):string
     {
         
         $html5 = '<!DOCTYPE html><html lang="cmn-hans"><head><meta charset="utf-8" />';

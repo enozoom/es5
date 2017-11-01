@@ -21,7 +21,7 @@ $CONFIGS->Hook = new SystemHook;
 $CONFIGS->Hook->beforeController();
 
 // 请求
-$CONFIGS->cmdq = (new Cmdq())->get();
+$CONFIGS->Cmdq = (new Cmdq())->get();
 
 
 // 路由

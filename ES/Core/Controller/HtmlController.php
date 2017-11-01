@@ -2,15 +2,16 @@
 namespace ES\Core\Controller;
 
 use ES\Core\Http\{ResponseTrait,RequestTrait};
+use ES\Libraries\HTML\HTML5;
 
 class HtmlController extends ControllerAbstract
 {
-        use ResponseTrait,RequestTrait;
-        public $title = '';
-        public $keywords = '';
-        public $description = '';
-        public $css = '';
-        public $js = '';
+    use ResponseTrait,RequestTrait;
+    public $title = '';
+    public $keywords = '';
+    public $description = '';
+    public $css = '';
+    public $js = '';
     
     public function __construct(){
         parent::__construct();
@@ -21,13 +22,13 @@ class HtmlController extends ControllerAbstract
      * 面包屑路径
      */
     protected function crumbs($category_id=0){
-    /**
-     * $crumbs = [
-     *                         ['标题1','路径2'],
-     *                         ['标题2','路径2'],
-     *                         '标题3只有标题',
-     *                     ];
-     */
+      /**
+       * $crumbs = [
+       *    ['标题1','路径2'],
+       *    ['标题2','路径2'],
+       *    '标题3只有标题',
+       * ];
+       */
         return [];
     }
     
@@ -45,9 +46,13 @@ class HtmlController extends ControllerAbstract
                 ($i = strpos($this->$cj,','))===0 && $this->$cj = substr($this->$cj,$i+1);
                 $this->$cj = str_replace('.'.$cj,'',$this->$cj);
         }
+        $ref = new \ReflectionClass(__CLASS__);
         foreach( get_class_vars(__CLASS__) as $k =>$v ){
-            (new \ReflectionClass(__CLASS__))->getProperty($k)->isPublic() && $data[$k] = $this->$k;
+            if( ($ref->getProperty($k)->isPublic() && !isset($data[$k])) || in_array($k,['css','js']) ){
+                $data[$k] = $this->$k;
+            }
         }
+        
         empty($data['crumbs']) && !empty( $this->crumbs() ) && $data['crumbs'] = $this->crumbs();
         
     }
@@ -58,8 +63,8 @@ class HtmlController extends ControllerAbstract
      * 默认装入<head>标签中的数据
      * 装入以控制器.方法名 命名的js,css文件，在文件存在的情况下
      *
-     * @param array $data                需要到view页面的变量
-     * @param bool $hf                     开启头尾
+     * @param array $data        需要到view页面的变量
+     * @param bool $hf           开启头尾
      * @param string $layout_dir 页面通用头尾文件夹
      * @return void
      */
@@ -70,11 +75,13 @@ class HtmlController extends ControllerAbstract
         $dir = $this->cmdq->d.'/'.$this->cmdq->c;
         empty($layout_dir) || $dir = $layout_dir;
         $file = "html/{$dir}/{$this->cmdq->c}/{$this->cmdq->m}";
-        $data['cmdq'] = (array)$this->cmdq;
-    
-        // 载入基本数据
+        
+        // 载入基本数据,移除冗余数据
         $this->__data__($data);
-    
+        
+        $data['HTML5'] = (new HTML5)->init($data);
+        unset( $data['load'],$data['output'] );
+        
         $hf && $this->_load_header_footer($dir,$data);
         $this->load->view($file,$data);
         $hf && $this->_load_header_footer($dir,$data,'footer');
@@ -82,8 +89,8 @@ class HtmlController extends ControllerAbstract
     
     /**
      * 载入头尾页面
-     * @param string $dir                    头尾页面所在的文件夹
-     * @param array $data                  需要放置在页面的变量
+     * @param string $dir            头尾页面所在的文件夹
+     * @param array $data            需要放置在页面的变量
      * @param string $layout_name    头尾名称
      */
     private function _load_header_footer($dir,$data,$layout_name='header'){

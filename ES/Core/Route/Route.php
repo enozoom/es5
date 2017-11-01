@@ -11,7 +11,7 @@ class Route{
         //$cache = new Cache();
         //$cache->get();
         
-        $cmdq = ConfigStatic::getConfigs('cmdq');
+        $cmdq = ConfigStatic::getConfigs('Cmdq');
         $ctl_cls = ucfirst($cmdq->c);
         
         try{
