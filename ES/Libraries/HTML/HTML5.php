@@ -39,9 +39,6 @@ HTML5;
 
         if($this->viewport){
             $viewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">';
-        }else{
-            $ie = $this->head_script('//cdn.fcmayi.com/lt.ie.9/html5shiv/3.7.3/html5shiv.min','lt IE 9',1).
-                  $this->head_script('//cdn.fcmayi.com/lt.ie.9/selectivizr/1.0.2/selectivizr-min','lt IE 9',1);
         }
         
         $this->noindex && $noindex = '<meta name="robots" content="noindex,nofollow" />';
@@ -98,7 +95,7 @@ HTML5;
      */
     private function head_script($file,$ie=FALSE,$foreign=FALSE){
         $script = sprintf('<script src="%s.js"></script>',$foreign?$file:'/min/'.$file);
-        return empty($ie)?$script:'<!--[if '.$ie.']>'.$script.'<![endif]-->';  
+        return empty($ie)?$script:'<!--[if '.$ie.']>'.$script.'<![endif]-->';
     }
     
     /**
