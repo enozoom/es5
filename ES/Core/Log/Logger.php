@@ -15,6 +15,9 @@ namespace ES\Core\Log;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
+use Psr\Log\LogLevel;
+use ES\Core\Toolkit\FileStatic;
+use ES\Core\Toolkit\TimeStatic;
 
 class Logger implements LoggerInterface{
   use LoggerTrait;
