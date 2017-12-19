@@ -71,13 +71,6 @@
 >>
 >> enozoomstudio.php 初始化框架  
 
-## logs 日志
-
-> logs  
->> alert 报警级别  
->> debug 调试级别  
->> error 错误级别  
-
 ## public 入口
 
 > public
@@ -89,6 +82,12 @@
 >>> js  
 >>
 >> uploads 上传文件夹  
+>> 
+>> logs 
+>>> alert 报警级别  
+>>> debug 调试级别  
+>>> error 错误级别  
+>>
 >> index.php 执行入口
 
 ## vendor 第三方及类加载器
