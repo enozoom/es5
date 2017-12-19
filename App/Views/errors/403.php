@@ -28,6 +28,6 @@
 <body>
 <h1><?php echo $tit?></h1>
 <p><?php echo $msg?></p>
-<div id="footer"><a href="<?php echo ES_LINK?>">&copy;&nbsp;ES<?php echo number_format(ES_VERSION,1)?></a><span></span></div>
+<div id="footer"><a href="http://www.enozoom.com">&copy;&nbsp;ES</a><span></span></div>
 </body>
 </html>

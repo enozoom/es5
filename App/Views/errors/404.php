@@ -33,6 +33,6 @@ body{font-family:"Microsoft YaHei";}
 <p>您访问的页面不存在或已经被删除</p>
 <?php endif?>
 <div></div>
-<div id="footer"><a href="<?php echo ES_LINK?>">&copy;&nbsp;ES<?php echo number_format(ES_VERSION,1)?></a><span></span></div>
+<div id="footer"><a href="http://www.enozoom.com">&copy;&nbsp;ES</a><span></span></div>
 </body>
 </html>
