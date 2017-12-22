@@ -20,7 +20,7 @@ trait InjectionTrait{
     
     protected function loadTamplate($tamplate,Array $args=[]):string{
         extract($args);
-        $path = APPPATH.'views/'.$tamplate.'.php';
+        $path = APPPATH.'Views/'.$tamplate.'.php';
         file_exists( $path ) || $this->tpl_err($path.'不存在','视图文件不存在');
         ob_start();
         include( $path );

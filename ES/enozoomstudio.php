@@ -4,13 +4,25 @@
  * @author Joe e@enozoom.com
  * 2016年6月24日09:44:36
  */
-use ES\Core\Load\ConfigStatic;
 use ES\Core\Log\Logger;
 use ES\Core\Hook\SystemHook;
 use ES\Core\Http\Cmdq;
 use ES\Core\Route\Route;
+use ES\Core\Load\ConfigStatic;
 
-$CONFIGS =  ConfigStatic::init();
+// 自动加载
+spl_autoload_register(function($classname){
+    if( strpos($classname,'\\') ){
+        $_path = BASEPATH.str_replace('\\', '/', $classname).'.php';
+        if( file_exists($_path) ){
+            require $_path;
+            return '';
+        }
+    }
+});
+
+
+$CONFIGS = ConfigStatic::init();
 $CONFIGS->Logger = Logger::getInstance();
 
  // 是否开启调试

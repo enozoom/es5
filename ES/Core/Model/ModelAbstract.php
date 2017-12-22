@@ -5,8 +5,9 @@
 namespace ES\Core\Model;
 
 use ES\Core\Toolkit\ConfigStatic;
-
+use ES\Core\Http\ResponseTrait;
 abstract class ModelAbstract{
+    use ResponseTrait;
     protected $db;
     protected $tableName;
     protected $primaryKey;
@@ -14,6 +15,9 @@ abstract class ModelAbstract{
     public function __construct()
     {
         $conf = ConfigStatic::getConfigs('Database');
+        if(in_array('',[$conf->host,$conf->user,$conf->dbname])){
+            $this->show_503('config/database.php,数据库配置参数不足！');
+        }
         $db = 'ES\\Core\\Database\\'.$conf->driver;
         $this->db = $db::get_instance();
         $this->tableName_primaryKey();
@@ -30,7 +34,7 @@ abstract class ModelAbstract{
             }
     }
     
-    public function __get($var)
+    public function __get(string $var)
     {
         switch($var){
                 case 'tableName':
@@ -51,7 +55,7 @@ abstract class ModelAbstract{
  *
  * @return [obj,..]/[[],..]
  */
-    public function _get($where='', $select='*', $orderby='',Array $limit=[])
+    public function _get(string $where='', string $select='*', string $orderby='',array $limit=[]):array
     {
         if(!empty($limit)){
             $per = $limit[0];
@@ -72,9 +76,9 @@ abstract class ModelAbstract{
  * @param string $select
  * @param bool $returnArray
  *
- * @return obj/array
+ * @return obj/null
  */
-    public function _getByPKID($id='',$select='*')
+    public function _getByPKID(int $id=0,string $select='*'):\stdClass
     {
         return $this->db->_get_by_PKID($id,$this->primaryKey,$this->tableName,$select);
     }
@@ -85,20 +89,28 @@ abstract class ModelAbstract{
  *
  * @return int
  */
-    public function _getTotalnum($where='')
+    public function _getTotalnum(string $where=''):int
     {
         return $this->db->_get_totalnum($where,$this->tableName);
     }
     
 /**
  * 插入数据
- * @param array $array
- *
- * @return
+ * @param array $data
+ * @return 插入成功的主键ID
  */
-    public function _insert(Array $array)
+    public function _insert(array $data):int
     {
-        return $this->db->_insert($this->_filterData($array),$this->tableName);
+        // 自动加入新增时间戳
+        $timestamp = '';
+        foreach($this->_attributes() as $k=>$t){
+            if( strpos($k,'timestamp') ){
+                $timestamp = $k;
+                break;
+            }
+        }
+        !empty($timestamp) && !key_exists($timestamp, $data) && $data[$timestamp] = time();
+        return $this->db->_insert($this->_filterData($data),$this->tableName);
     }
     
 /**
@@ -108,7 +120,7 @@ abstract class ModelAbstract{
  *
  * @return
  */
-    public function _update($pkid,Array $array)
+    public function _update(int $pkid,array $array)
     {
         return $this->db->_update($pkid,$this->_filterData($array),$this->primaryKey,$this->tableName);
     }
@@ -117,7 +129,7 @@ abstract class ModelAbstract{
  * 删除数据
  * @return
  */
-    public function _delete($where)
+    public function _delete(string $where):int
     {
         return $this->db->_delete($where,$this->tableName);
     }
@@ -126,8 +138,9 @@ abstract class ModelAbstract{
      * 通过主键进行删除（这里的主键是model类中设置的主键不一定是真实的表主键）
      * @param int $pkid
      */
-    public function _deleteByPKID($pkid){
-            return $this->_delete( "{$this->primaryKey} = {$pkid}" );
+    public function _deleteByPKID($pkid):int
+    {
+        return $this->_delete( "{$this->primaryKey} = {$pkid}" );
     }
     
 /**
@@ -157,7 +170,7 @@ abstract class ModelAbstract{
  * 过滤非本表字段的数据
  * @param array $data
  */
-    protected function _filterData($data=[])
+    protected function _filterData(array $data=[]):array
     {
         foreach($data as $k=>$v){
             if(! key_exists($k, $this->_attributes()) ){
@@ -173,7 +186,4 @@ abstract class ModelAbstract{
  * @return empty($attr)?[]:''
  */
     public abstract function _attributes($attr='');
-    
-    
-    
 }

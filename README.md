@@ -20,8 +20,8 @@
 >>>> 503.php 系统错误  
 >>>  
 >>> html 前端视图们  
->>>> esweb 【小写】与控制器文件夹对应  
->>>>> home 【小写】与控制器类对应  
+>>>> ESWeb 【小写】与控制器文件夹对应  
+>>>>> Home 【小写】与控制器类对应  
 >>>>>> index.php 与当前控制器方法对应  
 
 ### config 配置文件
@@ -82,7 +82,7 @@
 >> theme 主题  
 >>> css  
 >>>> public.base.min.css 公共样式  
->>>> esweb.home.index.css 【小写】控制器文件夹.控制器类.控制器方法.css
+>>>> ESWeb.Home.index.css 【小写】控制器文件夹.控制器类.控制器方法.css
 >>>
 >>> js  
 >>

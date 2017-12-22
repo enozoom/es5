@@ -1,7 +1,7 @@
 <?php
 return [
     [   'pattern'=>'default',
-        'cmdq'=>'d=esweb&c=home' ],
-    [   'pattern'=>'min/(.+\.(?:cs|j)s)',
-        'cmdq'=>'d=common&c=min&q=$1' ],
+        'cmdq'=>'d=ESWeb&c=Home' ],
+    [   'pattern'=>'Min/(.+\.(?:cs|j)s)',
+        'cmdq'=>'d=Common&c=Min&q=$1' ],
 ];

@@ -8,14 +8,14 @@ interface HookInterface{
   /**
    * 控制器未初始化前
    */
-  public abstract function beforeController();
+  public function beforeController();
   /**
    * 控制器实例化成功后
    */
-  public abstract function afterController();
+  public function afterController();
   /**
    * 控制器实例化成功后调用响应方法
    */
-  public abstract function afterControllerMethod();
+  public function afterControllerMethod();
   
 }

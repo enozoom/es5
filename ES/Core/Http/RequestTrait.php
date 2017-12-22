@@ -59,7 +59,7 @@ trait RequestTrait{
  * 远程get获取
  * @param string $url
  */
-    protected function curlGet($url)
+    protected function curlGet($url):string
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->baseUrl($url));
@@ -78,10 +78,10 @@ trait RequestTrait{
  * 远程post提交
  * @param string $url
  * @param array|string $post
- * @param number $is_json
- * @param string header
+ * @param bool $is_json
+ * @param array header
  */
-    protected function curlPost($url,$post,$is_json=1,$header=FALSE)
+    protected function curlPost(string $url,$post,bool $isJson=FALSE,array $header=[])
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->baseUrl($url));
@@ -96,7 +96,7 @@ trait RequestTrait{
         
         curl_errno($ch) && $output = '';// 出现异常
         curl_close($ch);
-        $is_json && $output = json_decode($output);
+        $isJson && $output = json_decode($output);
         return $output;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace ES\Core\Database;
 use ES\Core\Toolkit\ConfigStatic;
+use ES\Core\Database\DatabaseInterface;
 
 class Mysql implements DatabaseInterface{
     protected $mysqli;
@@ -13,7 +14,8 @@ class Mysql implements DatabaseInterface{
     protected $prefix = '';
     protected $port = 3306;
 
-    public function __construct(){
+    public function __construct()
+    {
         $configs = ConfigStatic::getConfigs('Database');
         foreach( get_class_vars(__CLASS__) as $var=>$val)
         {
@@ -26,7 +28,8 @@ class Mysql implements DatabaseInterface{
      * 获取一个单例
      * @return ES_Mysqli
      */
-    public static function get_instance(){
+    public static function get_instance():DatabaseInterface
+    {
         self::$instance instanceof self || self::$instance = new self();
         return self::$instance;
     }
@@ -35,7 +38,7 @@ class Mysql implements DatabaseInterface{
      * 连接数据库，返回一个mysqli对象
      * @return Mysqli
      */
-    protected function conn()
+    protected function conn():bool
     {
         if(!$this->mysqli instanceof \Mysqli)
         {
@@ -48,32 +51,33 @@ class Mysql implements DatabaseInterface{
                 $this->mysqli->set_charset("utf8");
             }
         }
+        return $this->mysqli instanceof \Mysqli;
     }
     /**
      * 开启或者关闭事务
      * @param bool $io 默认关闭
      * @return void
      */
-    public function transaction()
+    public function transaction():bool
     {
-        $this->mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+        return $this->mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
     }
     
     /**
      * 提交事务，技术事务
      * @return void
      */
-    public function commit()
+    public function commit():bool
     {
-        $this->mysqli->commit();
+        return $this->mysqli->commit();
     }
     
     /**
      * 回滚
      */
-    public function rollback()
+    public function rollback():bool
     {
-        $this->mysqli->rollback();
+        return $this->mysqli->rollback();
     }
     
     /**
@@ -81,24 +85,25 @@ class Mysql implements DatabaseInterface{
      * @param $dbname
      * @return void
      */
-    public function select_db($dbname,$prefix='')
+    public function select_db(string $dbname,string $prefix=''):bool
     {
-        $this->mysqli->select_db($dbname);
         $this->dbname = $dbname;
         empty($prefix) || $this->prefix = $prefix;
+        return $this->mysqli->select_db($dbname);
     }
     
     /**
      * 关闭连接
      * @return void
      */
-    public function close()
+    public function close():bool
     {
         if(!empty($this->mysqli))
         {
             $this->mysqli->close();
             $this->mysqli = NULL;
         }
+        return empty($this->mysqli);
     }
     
     /**
@@ -108,7 +113,7 @@ class Mysql implements DatabaseInterface{
      *
      * @return int 新插入的PKID,如果插入失败返回0，无自增长主键的始终返回1
      */
-    public function _insert(Array $data,$tablename)
+    public function _insert(array $data,string $tablename):int
     {
         if(empty($data)) return 0;
         $sql = "INSERT INTO `{$this->prefix}{$tablename}`";
@@ -141,7 +146,7 @@ class Mysql implements DatabaseInterface{
      *
      * @return int 被更新的主键
      */
-    public function _update($pkid,Array $data,$pkfield,$tablename)
+    public function _update(int $pkid,array $data,string $pkfield,string $tablename):int
     {
         $set = '';
         foreach($data as $field=>$val) $set .= ", `{$field}` = '".$this->_escape($val)."'";
@@ -164,7 +169,7 @@ class Mysql implements DatabaseInterface{
      * @param string $where
      * @param string $tablename
      */
-    public function _delete($where,$tablename)
+    public function _delete(string $where,string $tablename):int
     {
         $sql = "DELETE FROM `{$this->prefix}{$tablename}` WHERE {$where}";
         return $this->query($sql);
@@ -180,7 +185,7 @@ class Mysql implements DatabaseInterface{
      *
      * @return array(object..)
      */
-    public function _get($tablename,$where='',$select='*',$orderby=FALSE,$limit='')
+    public function _get(string $tablename,string $where='',string $select='*',string $orderby='',string $limit=''):array
     {
         $tablename = $this->tablename($tablename);
         
@@ -207,7 +212,7 @@ class Mysql implements DatabaseInterface{
      *
      * @return object
      */
-    public function _get_by_PKID($id,$pkfield,$tablename,$select='*')
+    public function _get_by_PKID(int $id,string $pkfield,string $tablename,string $select='*'):\stdClass
     {
         $where = sprintf("`%s` = '%s'",$pkfield,$this->_escape($id));
         $result = $this->_get($tablename,$where,$select,'',1);
@@ -221,7 +226,7 @@ class Mysql implements DatabaseInterface{
      * @param string $distinct含过滤字段的唯一字段
      * @return int
      */
-    public function _get_totalnum($where,$tableName,$distinct='')
+    public function _get_totalnum(string $where,string $tableName,string $distinct=''):int
     {
         $tableName = $this->tablename($tableName);
         $sql = 'SELECT COUNT(%s) AS count FROM %s';
@@ -239,13 +244,13 @@ class Mysql implements DatabaseInterface{
      *
      * @return string
      */
-    public function _where($where)
+    public function _where(string $where):string
     {
         if(empty($where)) return '';
         // 基本过滤,条件句中不能含有DML,DDL语句
         foreach(array('select','delete','update','drop','create','alter') as $dl)
         {
-            if(!stripos($where,$dl)===FALSE)
+            if(!stripos( strtolower($where) ,$dl)===FALSE)
             {
                 die('SQL含非法字符');
             }
@@ -253,7 +258,12 @@ class Mysql implements DatabaseInterface{
         return $where;
     }
     
-    public function _escape($str='')
+    /**
+     * 转义特殊字符
+     * @param string $str 要转义的字符，一般是条件句键值中的值
+     * @return string
+     */
+    public function _escape(string $str=''):string
     {
         return empty($str)?(is_numeric($str)?0:''):$this->mysqli->real_escape_string($str);
     }
@@ -261,10 +271,9 @@ class Mysql implements DatabaseInterface{
     /**
      * 执行SQL
      * @param string $sql
-     *
-     * @return array(obj..)
+     * @return mixed
      */
-    public function query($sql)
+    public function query(string $sql)
     {
         $this->last_query = $sql;
         if(!$_result = $this->mysqli->query($sql)){
@@ -290,23 +299,6 @@ class Mysql implements DatabaseInterface{
     }
     
     /**
-     * 实验性/确认有值后调用
-     * 进行一条select操作
-     * @param string $sql
-     */
-    public function _select($sql)
-    {
-        $_result = $this->mysqli->query($sql);
-        if( !$_result instanceof \MySQLi_Result || $_result->num_rows==0 ){
-            yield 0;
-        }
-        do{
-            $obj = $_result->fetch_object();
-            yield $obj;
-        }while($obj);
-    }
-    
-    /**
      * 实验性
      * 生成一句SQL
      * @param string $table
@@ -315,7 +307,7 @@ class Mysql implements DatabaseInterface{
      * @param string $orderby
      * @param string $limit
      */
-    public function sql($table,$select='',$where='',$orderby='',$limit='')
+    public function sql(string $table,string $select='',string $where='',string $orderby='',string $limit=''):string
     {
         empty($select) && $select = '*';
         $sql = sprintf('SELECT %s FROM %s',$select,$this->tablename($table));
@@ -330,7 +322,8 @@ class Mysql implements DatabaseInterface{
      *
      * @return string
      */
-    public function last_query(){
+    public function last_query():string
+    {
         return $this->last_query;
     }
     /**
@@ -339,7 +332,7 @@ class Mysql implements DatabaseInterface{
      * @param string $prefix 默认前缀
      * @return string
      */
-    public function tablename($tablename,$prefix='')
+    public function tablename(string $tablename,string $prefix='')
     {
         empty($prefix) && $prefix = $this->prefix;
         if(strpos($tablename,$prefix) === FALSE || strpos($tablename,$prefix) > 0){
@@ -350,14 +343,16 @@ class Mysql implements DatabaseInterface{
     /**
      * 当前数据库名
      */
-    public function dbname(){
+    public function dbname():string
+    {
         return $this->dbname;
     }
     
     /**
      * 记录发生数据库操作错误的调用方法及其控制器
      */
-    protected function log_error(){
-        $this->getConfigs('logger')->error(PHP_EOL.$this->mysqli->error.PHP_EOL.$this->last_query);
+    protected function log_error()
+    {
+        ConfigStatic::getConfigs('Logger')->error(PHP_EOL.$this->mysqli->error.PHP_EOL.$this->last_query);
     }
 }
