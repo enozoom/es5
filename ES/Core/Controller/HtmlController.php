@@ -13,30 +13,11 @@ class HtmlController extends ControllerAbstract
     public $css = '';
     public $js = '';
     
-    public function __construct(){
-        parent::__construct();
-        $this->load->helper('html');
-    }
-    
-    /**
-     * 面包屑路径
-     */
-    protected function crumbs($category_id=0){
-      /**
-       * $crumbs = [
-       *    ['标题1','路径2'],
-       *    ['标题2','路径2'],
-       *    '标题3只有标题',
-       * ];
-       */
-        return [];
-    }
-    
     /**
      * 输出到页面的变量们
      * @param array $data
      */
-    protected function __data__(&$data)
+    protected function __data__(array &$data)
     {
         foreach(['css','js'] as $cj){
             $f = implode('.',[$this->cmdq->d,$this->cmdq->c,$this->cmdq->m,$cj]);
@@ -52,9 +33,6 @@ class HtmlController extends ControllerAbstract
                 $data[$k] = $this->$k;
             }
         }
-        
-        empty($data['crumbs']) && !empty( $this->crumbs() ) && $data['crumbs'] = $this->crumbs();
-        
     }
     
     
@@ -68,7 +46,7 @@ class HtmlController extends ControllerAbstract
      * @param string $layout_dir 页面通用头尾文件夹
      * @return void
      */
-    protected function view($data=[],$hf=TRUE,$layout_dir='')
+    protected function view(array $data=[],bool $hf=TRUE,string $layout_dir='')
     {
         empty($layout_dir) && $layout_dir = $this->cmdq->d;
         is_array($data) || $data = json_decode( json_encode($data) ,TRUE);
@@ -93,7 +71,7 @@ class HtmlController extends ControllerAbstract
      * @param array $data            需要放置在页面的变量
      * @param string $layout_name    头尾名称
      */
-    private function _load_header_footer($dir,$data,$layout_name='header'){
+    private function _load_header_footer(string $dir,array $data,string $layout_name='header'){
         foreach( [$this->cmdq->c.'/',''] as $seg ){
             $hf = "{$dir}/{$seg}layout/{$layout_name}";
             if( file_exists(APPPATH.'Views/html/'.$hf.'.php') ){

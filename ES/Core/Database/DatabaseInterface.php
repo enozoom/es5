@@ -77,7 +77,7 @@ interface DatabaseInterface{
  * @param string $select    查询字段
  * @return obj
  */
-  public function _get_by_PKID(int $id,string $pkfield,string $tablename,string $select='*'):\stdClass;
+  public function _get_by_PKID(int $id,string $pkfield,string $tablename,string $select='*');
 /**
  * 获取满足条件的总行数
  * @param string $where     查询条件

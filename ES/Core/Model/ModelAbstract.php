@@ -65,20 +65,21 @@ abstract class ModelAbstract{
                 $page = $limit[1];
                 $limit = $page.','.$per;
             }
+        }else{
+            $limit = '';
         }
+        
         empty($orderby) && $orderby = "{$this->primaryKey} DESC";
         return $this->db->_get($this->tableName,$where,$select,$orderby,$limit);
     }
     
 /**
  * 根据ID获取特定一条数据
- * @param string $where
+ * @param number $id
  * @param string $select
- * @param bool $returnArray
- *
  * @return obj/null
  */
-    public function _getByPKID(int $id=0,string $select='*'):\stdClass
+    public function _getByPKID(int $id=0,string $select='*')
     {
         return $this->db->_get_by_PKID($id,$this->primaryKey,$this->tableName,$select);
     }

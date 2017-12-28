@@ -212,11 +212,11 @@ class Mysql implements DatabaseInterface{
      *
      * @return object
      */
-    public function _get_by_PKID(int $id,string $pkfield,string $tablename,string $select='*'):\stdClass
+    public function _get_by_PKID(int $id,string $pkfield,string $tablename,string $select='*')
     {
         $where = sprintf("`%s` = '%s'",$pkfield,$this->_escape($id));
         $result = $this->_get($tablename,$where,$select,'',1);
-        return empty($result)?FALSE:$result[0];
+        return empty($result)?NULL:$result[0];
     }
     
     /**
