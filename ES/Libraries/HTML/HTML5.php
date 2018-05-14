@@ -17,7 +17,6 @@ class HTML5 implements HTMLInterface
         foreach($args as $k=>$v){
             if(key_exists($k, $params)){
                 $this->{$k} = $v;
-                unset($args[$k]);
             }
         }
         return $this;
@@ -43,7 +42,7 @@ HTML5;
         
         $this->noindex && $noindex = '<meta name="robots" content="noindex,nofollow" />';
         $this->keywords && $keywords = sprintf('<meta name="keywords" content="%s"/>',$this->keywords);
-        $this->description && $description = sprintf('<meta name="description" content="%s"/>',$description);
+        $this->description && $description = sprintf('<meta name="description" content="%s"/>',$this->description);
         $this->css && $css = $this->resolve_http($this->css);
 
         $html = sprintf($html,$viewport,$ie,$noindex,$keywords,$description,$css);
@@ -69,7 +68,7 @@ HTML5;
      */
     
     private function head_link($file,$ie=FALSE,$foreign=FALSE){
-        $href =  ($foreign?'':'/min/').$file.'.css';
+        $href =  ($foreign?'':'/min/').$file.(strpos($file, '?')?'':'.css');
         $link = sprintf('<link href="%s" rel="stylesheet">',$href);
         return empty($ie)?$link:'<!--[if '.$ie.']>'.$link.'<![endif]-->';
     }
