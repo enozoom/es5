@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers\ESWeb;
+namespace app\controllers\esweb;
 
 use ES\Core\Controller\HtmlController;
 use ES\Core\Toolkit\ConfigStatic;

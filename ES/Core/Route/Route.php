@@ -15,18 +15,18 @@ class Route{
         
         $ctl_cls = ucfirst($cmdq->c);
         try{
-            $file = APPPATH.sprintf('Controllers/%s/%s.php',$cmdq->d,$ctl_cls);
+            $file = APPPATH.sprintf('controllers/%s/%s.php',$cmdq->d,$ctl_cls);
             if( !file_exists($file) ){
                 throw new \Exception();
             }
-            $reflector = new \ReflectionClass(sprintf('\\App\\Controllers\\%s\\%s',$cmdq->d,$ctl_cls));
+            $reflector = new \ReflectionClass(sprintf('\\app\\controllers\\%s\\%s',$cmdq->d,$ctl_cls));
         }catch (\Exception $e){
             $this->show_503("无法通过反射，获取类{$ctl_cls}！",'文件不存在');
         }
 
         $args = [];
         if(!empty($cmdq->q)){// 如果使用汇总压缩css,js,则不能用,分割参数
-            $args = $cmdq->c == 'Min' ? [$cmdq->q] : explode(',',$cmdq->q);
+            $args = $cmdq->c == 'min' ? [$cmdq->q] : explode(',',$cmdq->q);
         }
         $reflector->isFinal() ||
         $this->show_503($reflector->getName().'类修饰符必须是final','类修饰符错误' );

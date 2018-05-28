@@ -76,7 +76,7 @@ class HtmlController extends ControllerAbstract
     private function _load_header_footer(string $dir,array $data,string $layout_name='header'){
         foreach( [$this->cmdq->c.'/',''] as $seg ){
             $hf = "{$dir}/{$seg}layout/{$layout_name}";
-            if( file_exists(APPPATH.'Views/html/'.$hf.'.php') ){
+            if( file_exists(APPPATH.'views/html/'.$hf.'.php') ){
                 $this->load->view('html/'.$hf,$data);
                 break;
             }

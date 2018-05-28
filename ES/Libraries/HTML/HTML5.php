@@ -69,7 +69,7 @@ HTML5;
      */
     
     private function head_link($file,$ie=FALSE,$foreign=FALSE){
-        $href =  ($foreign?'':'/Min/').$file.'.css';
+        $href =  ($foreign?'':'/min/').$file.'.css';
         $link = sprintf('<link href="%s" rel="stylesheet">',$href);
         return empty($ie)?$link:'<!--[if '.$ie.']>'.$link.'<![endif]-->';
     }
@@ -94,7 +94,7 @@ HTML5;
      *
      */
     private function head_script($file,$ie=FALSE,$foreign=FALSE){
-        $script = sprintf('<script src="%s.js"></script>',$foreign?$file:'/Min/'.$file);
+        $script = sprintf('<script src="%s.js"></script>',$foreign?$file:'/min/'.$file);
         return empty($ie)?$script:'<!--[if '.$ie.']>'.$script.'<![endif]-->';
     }
     

@@ -14,6 +14,5 @@ return [
             'public'=>['home'=>['index']]
         ],
     ],
-    // 引导页所在的文件夹，如public_html
-    'bootstrap'=>'public'
+    'bootstrap'=>'public_html'
 ];

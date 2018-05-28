@@ -4,24 +4,24 @@
 
 ### App 开发包
 
-> App 
->> Controllers 控制器们  
->>> Common 公共控制器文件夹  
+> app 
+>> controllers 控制器们  
+>>> common 公共控制器文件夹  
 >>>> Min.php 处理css,js控制器类  
 >>>  
->>> ESWeb 默认控制器文件  
+>>> esweb 默认控制器文件  
 >>>> Home 默认控制器  
 >> 
->> Models 模型们  
->> Views 视图们  
+>> models 模型们  
+>> views 视图们  
 >>> errors 错误页面  
 >>>> 403.php 非法访问  
 >>>> 404.php 页面不存在  
 >>>> 503.php 系统错误  
 >>>  
 >>> html 前端视图们  
->>>> ESWeb 【小写】与控制器文件夹对应  
->>>>> Home 【小写】与控制器类对应  
+>>>> esweb 【小写】与控制器文件夹对应  
+>>>>> home 【小写】与控制器类对应  
 >>>>>> index.php 与当前控制器方法对应  
 
 ### config 配置文件
@@ -82,7 +82,7 @@
 >> theme 主题  
 >>> css  
 >>>> public.base.min.css 公共样式  
->>>> ESWeb.Home.index.css 【小写】控制器文件夹.控制器类.控制器方法.css
+>>>> esweb.home.index.css 【小写】控制器文件夹.控制器类.控制器方法.css
 >>>
 >>> js  
 >>
