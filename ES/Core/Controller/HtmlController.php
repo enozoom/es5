@@ -13,6 +13,7 @@ class HtmlController extends ControllerAbstract
     public $description = '';
     public $css = '';
     public $js = '';
+    public $viewport = 1;
     
     /**
      * 输出到页面的变量们
