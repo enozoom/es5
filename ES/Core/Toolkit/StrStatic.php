@@ -74,7 +74,7 @@ final class StrStatic {
      * @return bool
      */
     public static function isMobile(string $mobile=''):string{
-        return preg_match('/^1[3-9]\d{9}$/', $mobile);
+        return preg_match('/^1[34578]\d{9}$/', $mobile);
     }
     
     /**

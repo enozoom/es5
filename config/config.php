@@ -13,5 +13,7 @@ return [
     // ['控制器文件夹名'=>['控制器类型'=>['控制器方法名',..]]]
             'public'=>['home'=>['index']]
         ],
-    ]
+    ],
+    // 引导页所在的文件夹，如public_html
+    'bootstrap'=>'public'
 ];

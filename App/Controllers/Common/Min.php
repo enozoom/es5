@@ -2,7 +2,7 @@
 namespace App\Controllers\Common;
 
 use ES\Core\Controller\DataController;
-
+use ES\Core\Toolkit\ConfigStatic;
 final class Min extends DataController{
     private $dir;
     private $suffix;
@@ -10,7 +10,7 @@ final class Min extends DataController{
     public function __construct()
     {
         parent::__construct();
-        $this->dir = BASEPATH.'public/theme/';
+        $this->dir = BASEPATH.ConfigStatic::getConfig('bootstrap').'/theme/';
     }
  
     public function index(string $files='')

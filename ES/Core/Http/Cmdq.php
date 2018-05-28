@@ -56,10 +56,9 @@ class Cmdq{
             substr($query,-1,1) === '/' && $query = substr($query,0,strlen($query)-1);
             // 分割参数
             $args = explode('/',$query);
-            
             // 与路由配置文件进行匹配
             foreach($routes as $route){
-                $preg = "#^{$route['pattern']}$#";
+                $preg = "#^{$route['pattern']}$#i";
                 if(preg_match($preg,$query)){
                     $url = preg_replace($preg,$route['cmdq'],$query);
                     //无特殊参数，或者是min压缩

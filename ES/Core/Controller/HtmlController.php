@@ -3,6 +3,7 @@ namespace ES\Core\Controller;
 
 use ES\Core\Http\{ResponseTrait,RequestTrait};
 use ES\Libraries\HTML\HTML5;
+use ES\Core\Toolkit\ConfigStatic;
 
 class HtmlController extends ControllerAbstract
 {
@@ -23,7 +24,7 @@ class HtmlController extends ControllerAbstract
             $f = implode('.',[$this->cmdq->d,$this->cmdq->c,$this->cmdq->m,$cj]);
             if($this->cmdq->d!=='esadmin')
                 isset($data[$cj]) && $this->$cj .= ','.$data[$cj];
-                file_exists(BASEPATH."public/theme/{$cj}/{$f}") && $this->$cj .= ','.$f;
+                file_exists(BASEPATH.ConfigStatic::getConfig('bootstrap')."/theme/{$cj}/{$f}") && $this->$cj .= ','.$f;
                 ($i = strpos($this->$cj,','))===0 && $this->$cj = substr($this->$cj,$i+1);
                 $this->$cj = str_replace('.'.$cj,'',$this->$cj);
         }
