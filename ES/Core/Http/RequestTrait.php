@@ -1,6 +1,5 @@
 <?php
 namespace ES\Core\Http;
-
 trait RequestTrait{
     /**
      * 获取当家uri中的host部分，与传入的参数组成网址
@@ -93,10 +92,13 @@ trait RequestTrait{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         empty($header) || curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
         $output = curl_exec($ch);
-        
-        curl_errno($ch) && $output = '';// 出现异常
+        if(curl_errno($ch)){// 出现异常
+            $Log = \ES\Core\Log\Logger::getInstance();
+            $Log->debug($output);
+            $output = '';
+        }
         curl_close($ch);
-        $isJson && $output = json_decode($output);
+        $isJson && !empty($output) && $output = json_decode($output);
         return $output;
     }
 }
