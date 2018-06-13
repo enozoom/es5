@@ -31,6 +31,6 @@ class DataController extends ControllerAbstract{
      * @param string $msg
      */
     protected function __log($msg){
-        $this->getConfigs('logger')->debug($msg);
+        \ES\Core\Toolkit\ConfigStatic::getConfigs('Logger')->debug($msg);
     }
 }
