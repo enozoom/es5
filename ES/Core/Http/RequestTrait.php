@@ -1,6 +1,16 @@
 <?php
 namespace ES\Core\Http;
 trait RequestTrait{
+
+    /**
+     * 当前URL
+     * @return string
+     */
+    protected function currentURL():string
+    {
+        return sprintf('%s://%s%s',$_SERVER['REQUEST_SCHEME'],$_SERVER['HTTP_HOST'],$_SERVER['REQUEST_URI']);
+    }
+    
     /**
      * 获取当家uri中的host部分，与传入的参数组成网址
      * @param string $url
