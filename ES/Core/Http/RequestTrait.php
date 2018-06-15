@@ -33,7 +33,7 @@ trait RequestTrait{
      */
     protected function reqestMethod(string $method=''):string
     {
-        return empty($m = strtolower($_SERVER['REQUEST_METHOD']))?$m:$m==$method;
+        return empty($m = strtolower($_SERVER['REQUEST_METHOD']))?$m:$m==strtolower($method);
     }
 
     /**
