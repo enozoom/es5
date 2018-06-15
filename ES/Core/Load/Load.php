@@ -8,9 +8,8 @@ class Load
 {
     use InjectionTrait;
     
-    private $dir_model   = 'Models';
-    private $dir_view    = 'Views';
-    private $dir_library = 'Libraries';
+    private $dir_model   = 'models';
+    private $dir_library = 'libraries';
     
     /**
      * 动态加载一个可以在前台使用的方法
@@ -45,7 +44,7 @@ class Load
         if(!property_exists(ControllerAbstract::getInstance(),$alias)){
             foreach( [APPPATH,SYSPATH] as $path ){
                 if( file_exists( $path.$this->dir_library.'/'.str_replace('\\','/',$cls).'.php' ) ){
-                    $cls = implode('\\', [basename($path),$this->dir_library,ucfirst($cls)]);
+                    $cls = implode('\\', [basename($path),$this->dir_library,$this->decodePath($cls)]);
                     $this->Ctrl()->$alias = new $cls();
                     break;
                 }
@@ -59,7 +58,7 @@ class Load
     {
         empty($alias) && $alias = $cls;
         if(!property_exists(ControllerAbstract::getInstance(),$alias)){
-            $cls = implode('\\', [basename(APPPATH),$this->dir_model,ucfirst($cls)]);
+            $cls = implode('\\', [basename(APPPATH),$this->dir_model,$this->decodePath($cls)]);
             $_model = new $cls();
             is_subclass_of($_model,'\ES\core\Model\ModelAbstract') || $this->tpl_err($cls.'非ES_model子类');
             $this->Ctrl()->$alias = &$_model;
@@ -67,12 +66,23 @@ class Load
         return $this;
     }
     
-    public function view($tpl='',Array $args=[])
+    public function view($tpl='',array $args=[])
     {
         $htm = $this->loadTamplate($tpl,$args);
         $this->Ctrl()->output->append_output($htm);
     }
     
+    private function decodePath(string $path):string
+    {
+        $path = str_replace('\\', '/', $path);
+        if(strpos($path, '/')!==FALSE){
+            $arr = explode('/', $path);
+            $last = count($arr)-1;
+            $arr[$last] = ucfirst($arr[$last]);
+            $path = implode('\\', $arr);
+        }
+        return $path;
+    }
     
     private function &Ctrl():ControllerAbstract
     {
