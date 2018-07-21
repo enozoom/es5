@@ -41,14 +41,18 @@ class Route{
         $hook->afterController();
 
         $rMethod = null;
-        try{
-                $rMethod = $reflector->getMethod($cmdq->m);
+        try{// 这里产生的异常是反射异常，用Exception捕获
+            $rMethod = $reflector->getMethod($cmdq->m);
         }catch(\Exception $e){
-                $this->show_503("控制器{$cmdq->c}方法{$cmdq->m}不存在",'方法不存在');
+            $this->show_503("控制器{$cmdq->c}方法{$cmdq->m}不存在",'方法不存在');
         }
         $this->disable_method( $rMethod );
-        $rMethod->invokeArgs($cls,$args);
         
+        try{// 这里产生的错误是解析错误，所以需要Error捕获
+            $rMethod->invokeArgs($cls,$args);
+        }catch(\Error $e){
+            $this->show_503("控制器{$cmdq->c}方法{$cmdq->m}，参数类型不匹配。",'方法参数错误');
+        }
         $hook->afterControllerMethod();
         
         $cls->closeDB();// 关闭数据库
