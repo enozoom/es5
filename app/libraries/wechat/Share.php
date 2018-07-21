@@ -12,8 +12,7 @@ class Share extends WechatAbstract
         return ['appId' => $this->appid,
                     'timestamp' => $timestamp,
                     'nonceStr' => $nonceStr,
-                    'signature' => $this->jsapiSign($nonceStr, $timestamp)
-                   ];
+                    'signature' => $this->jsapiSign($nonceStr, $timestamp) ];
     }
 }
 

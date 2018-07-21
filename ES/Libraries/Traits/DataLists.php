@@ -14,7 +14,7 @@ trait DataLists {
      * @param int $offset 偏移数
      * @param string $url 分页上的跳转地址，不含/$per/$offset部分
      * @param bool $dataHref 是否使用data-href代替href属性
-     * @return array
+     * @return array[rows=>,pagination=>]
      */
     private function __lists(ModelAbstract $M,
                                         int $per = 10,
