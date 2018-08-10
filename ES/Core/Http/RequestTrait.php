@@ -3,6 +3,40 @@ namespace ES\Core\Http;
 trait RequestTrait{
 
     /**
+     * 获取真实的ip地址
+     * @return string
+     */
+    protected function getRealIp():string
+    {
+        static $realip;
+        $sUserIp = '';
+        if (isset($_SERVER)) {
+            if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+                $realip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+            } else if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+                $realip = $_SERVER["HTTP_CLIENT_IP"];
+            } else {
+                $realip = $_SERVER["REMOTE_ADDR"];
+            }
+        } else {
+            if (getenv("HTTP_X_FORWARDED_FOR")) {
+                $realip = getenv("HTTP_X_FORWARDED_FOR");
+            } else if (getenv("HTTP_CLIENT_IP")) {
+                $realip = getenv("HTTP_CLIENT_IP");
+            } else {
+                $realip = getenv("REMOTE_ADDR");
+            }
+        }
+        if (strpos($realip, ',') === false) {
+            $sUserIp = $realip;
+        } else {
+            $arrUserIp = explode(',', $realip);
+            $sUserIp = $arrUserIp[0];
+        }
+        return $sUserIp;
+    }
+    
+    /**
      * 当前URL
      * @return string
      */
@@ -39,7 +73,7 @@ trait RequestTrait{
     /**
      * 将提交的json转化成对象
      */
-    protected function phpInputData():\stdClass
+    protected function phpInputData()
     {
             $data = file_get_contents('php://input');
             return empty($data)?null:json_decode($data);
