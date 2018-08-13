@@ -48,11 +48,8 @@ class Route{
         }
         $this->disable_method( $rMethod );
         
-        try{// 这里产生的错误是解析错误，所以需要Error捕获
-            $rMethod->invokeArgs($cls,$args);
-        }catch(\Error $e){
-            $this->show_503("控制器{$cmdq->c}方法{$cmdq->m}，参数类型不匹配。",'方法参数错误');
-        }
+        $rMethod->invokeArgs($cls,$args);
+       
         $hook->afterControllerMethod();
         
         $cls->closeDB();// 关闭数据库
