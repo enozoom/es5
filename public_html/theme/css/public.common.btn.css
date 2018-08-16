@@ -1,0 +1,31 @@
+.btn,button{border:none}
+.btn,button{
+  display:inline-block;
+  cursor:pointer;
+  white-space:nowrap;
+  font-style:inherit;
+  border-radius:3px;
+  font-size:14px;
+  height:40px;
+  line-height:40px;
+  padding:0 20px
+}
+.btn i,button i{margin-right:3px}
+.btn.blue{background-color:#1d6ead;}
+.btn,gray{background-color:#ddd;color:#777}
+.btn.green{background-color:#1dad4c;}
+.btn.red{background-color:#e70505;}
+.btn-orange{background-color:#ff7800;}
+.btn.blue,.btn.green,.btn.red,.btn-orange{color:#fff}
+
+.btn.outline{border-style:solid;background:transparent;border-width:1px}
+.btn.outline.blue{border-color:#1d6ead;color:#1d6ead}
+.btn.outline.gray{border-color:#ddd;color:#ddd}
+.btn.outline.green{border-color:#1dad4c;color:#1dad4c}
+.btn.outline.red{border-color:#e70505;color:#e70505}
+.btn.outline.orange{border-color:#ff7800;color:#ff7800}
+
+.btn.small{height:30px;line-height:30px;padding:0 10px}
+.btn.smallx2{height:22px;line-height:22px;padding:0 7px;font-size:12px;border-radius:2px}
+.btn.outline.small{line-height:28px}
+.btn.outline.smallx2{line-height:20px}
