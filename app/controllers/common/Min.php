@@ -27,8 +27,8 @@ final class Min extends DataController{
      */
     private function _css(string $str=''):string
     {
-        $str = preg_replace(array('/{\s*([^}]*)\s*}/','/\s*:\s*/','~\/\*[^\*\/]*\*\/~s'),array('{$1}',':',''),$str);
-        $str = preg_replace(array('/'.PHP_EOL.'/','/\n*/'),'',$str);
+        $str = preg_replace(['/'.PHP_EOL.'/','/\n*/','/\/\*.*?\*\//'],'',$str);
+        $str = preg_replace('/\s*({|}|,|;|:)\s*/','$1',$str);
         return $str;
     }
 
