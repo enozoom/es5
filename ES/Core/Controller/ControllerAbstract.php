@@ -18,7 +18,8 @@ abstract class ControllerAbstract{
         $this->cmdq = ConfigStatic::getConfigs('Cmdq');
     }
     
-    public static function &getInstance():ControllerAbstract{
+    public static function &getInstance():ControllerAbstract
+    {
         return self::$instance;
     }
     
