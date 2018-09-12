@@ -23,20 +23,21 @@ class Route{
         }catch (\Exception $e){
             $this->show_503("无法通过反射，获取类{$ctl_cls}！",'文件不存在');
         }
-
         $args = [];
-        if(!empty($cmdq->q)){// 如果使用汇总压缩css,js,则不能用,分割参数
+        if(strlen($cmdq->q)){// 如果使用汇总压缩css,js,则不能用,分割参数
             $args = $cmdq->c == 'min' ? [$cmdq->q] : explode(',',$cmdq->q);
+            foreach($args as $_k=>$_v){
+                if(!strlen($_v)){
+                    unset($args[$_k]);
+                }
+            }
         }
         $reflector->isFinal() ||
         $this->show_503($reflector->getName().'类修饰符必须是final','类修饰符错误' );
-        
         $cls = $reflector->newInstance();
-        
         $parent_cls = '\ES\Core\Controller\ControllerAbstract';
         is_subclass_of($cls,$parent_cls) ||
         $this->show_503('控制器必须是'.$parent_cls.'的子类','非控制器实例类');
-        
         $hook = ConfigStatic::getConfigs('Hook');
         $hook->afterController();
 
@@ -47,7 +48,6 @@ class Route{
             $this->show_503("控制器{$cmdq->c}方法{$cmdq->m}不存在",'方法不存在');
         }
         $this->disable_method( $rMethod );
-        
         $rMethod->invokeArgs($cls,$args);
        
         $hook->afterControllerMethod();
