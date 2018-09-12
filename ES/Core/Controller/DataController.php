@@ -7,9 +7,10 @@
  */
 namespace ES\Core\Controller;
 
-use ES\Core\Http\ResponseTrait;
+use ES\Core\Http\{RequestTrait,ResponseTrait};
+use ES\Core\Toolkit\AryStatic;
 class DataController extends ControllerAbstract{
-    use ResponseTrait{ render as private oRender; }
+    use RequestTrait,ResponseTrait{ render as private oRender; }
     
     protected function render($str='',$type='html',$httpCache=24){
         $this->oRender($str,$type,$httpCache);
@@ -23,7 +24,7 @@ class DataController extends ControllerAbstract{
      * @return bool
      */
     protected function __postRequires($requires=[]){
-        return strtolower($_SERVER['REQUEST_METHOD'])=='post' && $this->isRequired($requires,$_POST);
+        return $this->reqestMethod('post') && AryStatic::isRequired($requires);
     }
     
     /**
