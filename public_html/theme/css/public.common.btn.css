@@ -1,5 +1,4 @@
-.btn,button{border:none}
-.btn,button{
+.btn{border:none;
   display:inline-block;
   cursor:pointer;
   white-space:nowrap;
@@ -10,13 +9,13 @@
   line-height:40px;
   padding:0 20px
 }
-.btn i,button i{margin-right:3px}
+.btn i{margin-right:3px}
 .btn.blue{background-color:#1d6ead;}
-.btn,gray{background-color:#ddd;color:#777}
+.btn.gray{background-color:#ddd;color:#777}
 .btn.green{background-color:#1dad4c;}
 .btn.red{background-color:#e70505;}
-.btn-orange{background-color:#ff7800;}
-.btn.blue,.btn.green,.btn.red,.btn-orange{color:#fff}
+.btn.orange{background-color:#ff7800;}
+.btn.blue,.btn.green,.btn.red,.btn.orange{color:#fff}
 
 .btn.outline{border-style:solid;background:transparent;border-width:1px}
 .btn.outline.blue{border-color:#1d6ead;color:#1d6ead}
