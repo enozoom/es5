@@ -8,15 +8,7 @@ final class AryStatic{
      */
     public static function isRequired(array $keys,array $data=[]):bool
     {
-        empty($data) && $data = $_POST;
-        foreach($keys as $k)
-        {
-            if( !key_exists($k, $data) )
-            {
-                return FALSE;
-            }
-        }
-        return TRUE;
+        return empty($keys)?true:empty(array_diff($keys, array_keys(empty($data)?$_POST:$data)));;
     }
     
     /**
