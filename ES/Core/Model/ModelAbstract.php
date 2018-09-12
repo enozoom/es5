@@ -174,6 +174,7 @@ abstract class ModelAbstract{
     protected function _filterData(array $data=[]):array
     {
         foreach($data as $k=>$v){
+            $v = trim($v);
             if(! key_exists($k, $this->_attributes()) ){
                 unset($data[$k]);
             }
