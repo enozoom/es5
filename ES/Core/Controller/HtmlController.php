@@ -55,7 +55,6 @@ class HtmlController extends ControllerAbstract
         $dir = $this->cmdq->d.'/'.$this->cmdq->c;
         empty($layout_dir) || $dir = $layout_dir;
         $file = "html/{$dir}/{$this->cmdq->c}/{$this->cmdq->m}";
-        
         // 载入基本数据,移除冗余数据
         $this->__data__($data);
         

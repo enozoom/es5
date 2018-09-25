@@ -15,7 +15,9 @@ class Cache implements CacheItemInterface, CacheItemPoolInterface,InvalidArgumen
      * @return string
      *   当前缓存项的「键」
      */
-    public function getKey(){}
+    public function getKey(){
+        
+    }
 
     /**
      * 凭借此缓存项的「键」从缓存系统里面取出缓存项。
@@ -29,7 +31,9 @@ class Cache implements CacheItemInterface, CacheItemPoolInterface,InvalidArgumen
      * @return mixed
      *   此缓存项的「键」对应的「值」，如果找不到的话，返回 `null`
      */
-    public function get(){}
+    public function get(){
+        
+    }
 
     /**
      * 确认缓存项的检查是否命中。

@@ -47,12 +47,24 @@ class XMLStatic
      * @param bool $return_header 要不要含声明一起返回
      * @return
      */
-    public static function toXml($data, $root = 'xml'){
+    public static function toXml($data, $root = 'xml'):string
+    {
         $xml = new SimpleXMLExtended("<?xml version='1.0' encoding='utf-8'?><{$root} />");
         self::node($data,$xml);
         $xmlstr = $xml->asXML();
         $xmlstr = preg_replace('@<\?.*?>@','',$xmlstr);
         return trim($xmlstr);
+    }
+    
+    /**
+     * 将xml转成Array
+     * @param string $xml
+     * @return array
+     */
+    public static function xmlToArray(string $xml=''):array
+    {
+        $sxe = simplexml_load_string($xml,'SimpleXMLElement', LIBXML_NOCDATA);
+        return json_decode(json_encode($sxe,JSON_UNESCAPED_UNICODE),true );
     }
 }
 

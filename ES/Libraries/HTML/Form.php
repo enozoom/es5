@@ -1,11 +1,10 @@
 <?php
 namespace ES\Libraries\HTML;
 
-use ES\Core\Toolkit\ConfigStatic as Config;
+use ES\Core\Toolkit\ConfigStatic;
 use ES\Core\Http\HeaderTrait;
-use ES\Core\Toolkit\TimeStatic;
 
-class Form{
+class Form implements HTMLInterface{
 
     use HeaderTrait;
     private $form = '';
@@ -14,10 +13,11 @@ class Form{
     private $cmdq;
   
 
-    public function init(\ES\Core\Model\ModelAbstract $model,&$instance){
+    public function init(\ES\Core\Model\ModelAbstract $model=null,Array $args=[]){
+        empty($model) && die('第一个参数必须存在，而且必须是\ES\Core\Model\ModelAbstract');
         $this->model = $model;
-        empty($instance) || $this->instance = &$instance;
-        $this->cmdq = Config::getConfigs('Cmdq');
+        empty($args['instance']) || $this->instance = $args['instance'];
+        $this->cmdq = ConfigStatic::getConfigs('Cmdq');
         return $this;
     }
       
@@ -37,16 +37,15 @@ class Form{
             $form_attr['action'] = $action;
         }
           
-        foreach(['html'=>'提交','type'=>'button','class'=>'btn blue'] as $k=>$v)
+        foreach(['html'=>"提交",'type'=>"button"] as $k=>$v)
         {
             empty($btn_attr[$k]) && $btn_attr[$k] = $v;
         }
         $btn_txt = $btn_attr['html'];unset($btn_attr['html']);
         $btn = sprintf('<button %s>%s</button>',$this->_attr($btn_attr,[]),$btn_txt);
-        
-        $tips = '<div class="form-tips alert hide"><em class="close"></em><span></span></div>';
+          
         $form = sprintf('<div class="es4-form"><form role="form" %s>%s</form></div>',
-                           $this->_attr($form_attr),$this->form.$tips.$btn);
+                           $this->_attr($form_attr),$this->form.$btn);
         if(!$print ){
             return $form;
         }else{
@@ -96,7 +95,7 @@ class Form{
         $label = $this->model->_attributes($name);
         $value = empty($this->instance)?'':$this->instance->$name;
         if(isset($attr['value'])){
-            empty($value) && empty($this->instance) && $value = $attr['value'];
+            empty($value) && empty($this->instance) && $value = $attr['value']; 
             unset($attr['value']);
         }
         
@@ -106,7 +105,7 @@ class Form{
     private function element_file($name,$attr){
         $label = $this->model->_attributes($name);
         $tpl = '<label>%s</label>'.
-               '<div class="uploader" data-action="%s"><label><span class="btn green outline">上传%s</span><input type="file" name="%s" ><input type="hidden" name="%s" value="%s"></label></div>'.
+               '<div class="uploader" data-action="%s"><label><span class="btn btn-green-outline">上传%s</span><input type="file" name="%s" ><input type="hidden" name="%s" value="%s"></label></div>'.
                '<p class="preview"></p>';
         return sprintf($tpl,$label,"/{$this->cmdq->d}/{$this->cmdq->c}/upload/$name",
                             $label,$name,
@@ -115,6 +114,7 @@ class Form{
   
     private function element_checkbox($name,$attr)
     {
+    
     
     }
   
@@ -160,7 +160,7 @@ class Form{
     * @param array $attr 标签忽略name,placeholder,help属性
     * @return string
     */
-    private function _attr(Array $attr=[],Array $filter=['name','help']){
+    private function _attr(Array $attr=[],Array $filter=['name','help','placeholder']){
         if(empty($attr)) return '';
         is_array($attr) || die('参数必须为数组');
         $str = '';
@@ -186,7 +186,7 @@ class Form{
           in_array( $k,$filter ,true) || $str .= is_numeric($k)?" {$v}":" {$k}=\"{$v}\"";
         }
         return $str;
-    }
+    }  
   
 
 /*---------------------------------------------------------
@@ -220,4 +220,6 @@ class Form{
     {
         return $this->element('radio',$name,$attr);
     }
+
+//---------------------------------------------------------|
 }

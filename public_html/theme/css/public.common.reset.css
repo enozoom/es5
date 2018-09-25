@@ -7,7 +7,7 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
+strike, sub, sup, tt, var,
 b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
@@ -24,16 +24,23 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 body {line-height: 1;}
-img,textarea,input{max-width:100%;}
+img,textarea,input{max-width:100%;font-family:inherit;}
 a,ins{color:inherit;text-decoration:none;}
-input, button, select, textarea, :focus{outline: none;-webkit-appearance: none;font-size: inherit;}
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus{outline: none;-webkit-appearance: none;font-size: inherit;}
 table {border-collapse: collapse;border-spacing: 0;}
 ul,ol{list-style:none;}
 /*common*/
 .align.center{text-align:center;}
-.align.right{text-align:center;}
+.align.right{text-align:right;}
 .flex{display:flex;flex-wrap:wrap}
 .nowrap{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+.small{font-size:small;}
+.bold{font-weight:700;}
+.block{display:block;}
+.hide{display:none;}
+.clear::after{content:"";clear:both;display:block;}
 /*color*/
 .color.white{color:#fff}
 .color.red{color:#c62828}

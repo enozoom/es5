@@ -107,6 +107,7 @@ trait RequestTrait{
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->baseUrl($url));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 1);
         //        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         //        curl_setopt($ch, CURLOPT_SSLVERSION, 3); //设定SSL版本
         curl_setopt($ch,CURLOPT_SSL_VERIFYPEER ,FALSE);

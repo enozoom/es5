@@ -21,7 +21,6 @@ spl_autoload_register(function($classname){
     }
 });
 
-
 $CONFIGS = ConfigStatic::init();
 $CONFIGS->Logger = Logger::getInstance();
 

@@ -3,23 +3,23 @@ namespace ES\Core\Toolkit;
 
 /**
  * 获取全局变量$CONFIGS的相关值
- *
+ * 
  * 已知$CONFIGS包含有
- *
+ * 
  * [ // 基本配置文件
- *
+ *   
  *   Config=>{},
  *   // 当前的控制器，方法，控制器文件夹，方法参数
- *
+ *   
  *   Cmdq=>{},
  *   // 数据库配置文件
- *
+ *   
  *   Database=>{},
  *   // 钩子类
- *
+ *   
  *   Hook=>{},
  *   // 日志类
- *
+ *   
  *   Logger=>{},
  *   // 路由配置文件
  *   Route=>[],
@@ -52,19 +52,15 @@ final class ConfigStatic{
     }
 /**
  * 设置当前的配置信息
- * @param mixedmix $val     新值
- * @param string $key          键 当key==nokey时，如setConfig(new Hook,'nokey','Hook');
+ * @param string $val        新值
+ * @param string $key        键
  * @param string $configName 配置文件
  * @return 当前对象  $this->setConfig(1,'cache')->setConfig('es_','prefix','database');
  */
-    public static  function setConfig($val,string $key='',string $configName='Config')
+    public static  function setConfig(string $val,string $key,string $configName='Config')
     {
         global $CONFIGS;
-        if($key == 'nokey'){
-            $CONFIGS->{$configName} = $val;
-        }else{
-            $CONFIGS->{$configName}->{$key} = $val;
-        }
+        $CONFIGS->{$configName}->{$key} = $val;
         return $CONFIGS;
     }
 }

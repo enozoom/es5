@@ -10,7 +10,8 @@ abstract class ControllerAbstract{
     public $output;
     public $cmdq;
     
-    public function __construct(){
+    public function __construct()
+    {
         self::$instance =& $this;
         $this->load = new Load();
         $this->output = new Output();
@@ -23,7 +24,8 @@ abstract class ControllerAbstract{
         return self::$instance;
     }
     
-    public function closeDB(){
+    public function closeDB()
+    {
         foreach( get_object_vars($this) as $var=>$val ){
             if($val instanceof ModelAbstract){
                 $this->$var->db->close();
