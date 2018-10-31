@@ -41,4 +41,21 @@ trait AuthTrait{
     {
         return password_verify(date('Y-m-dW').$salt,$hash);
     }
+    
+    /**
+     * 获取IP地址
+     * @return string
+     */
+    protected function ip():string
+    {
+        $ip = '';
+        if( !empty($_SERVER['HTTP_CLIENT_IP']) ){
+            $ip=$_SERVER['HTTP_CLIENT_IP'];
+        }elseif( !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ){
+            $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+        }else{
+            $ip=$_SERVER['REMOTE_ADDR']??'';
+        }
+        return $ip;
+    }
 }

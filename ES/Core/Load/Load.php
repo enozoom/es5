@@ -9,6 +9,7 @@ class Load
     use InjectionTrait;
     
     private $dir_model   = 'models';
+    private $dir_library = 'libraries';
     
     /**
      * 动态加载一个可以在前台使用的方法
@@ -40,13 +41,11 @@ class Load
     {
         $clsName = preg_replace('|(\w+[^\w]+)*(\w+)$|', '$2', $cls);
         empty($alias) && $alias = $clsName;
-        $syspath = BASEPATH.'ES/';
         if(!property_exists(ControllerAbstract::getInstance(),$alias)){
-            $paths = [ '\\app\\libraries\\'.$cls, '\\ES\\Libraries\\'.$cls ];
-            foreach($paths as $path){
-                $_path = '.'.str_replace('\\', '/', $path).'.php';
-                if(file_exists($_path)){
-                    $this->Ctrl()->$alias = new $path();
+            foreach( [APPPATH,SYSPATH] as $path ){
+                if( file_exists( $path.$this->dir_library.'/'.str_replace('\\','/',$cls).'.php' ) ){
+                    $cls = implode('\\', [basename($path),$this->dir_library,$this->decodePath($cls)]);
+                    $this->Ctrl()->$alias = new $cls();
                     break;
                 }
             }
