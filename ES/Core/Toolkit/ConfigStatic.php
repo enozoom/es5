@@ -52,15 +52,19 @@ final class ConfigStatic{
     }
 /**
  * 设置当前的配置信息
- * @param string $val        新值
- * @param string $key        键
- * @param string $configName 配置文件
+ * @param mix $val            新值
+ * @param string $key         键 当key为空时，设置根属性，如setConfig(new Hook,'','Hook');
+ * @param string $configName  配置文件
  * @return 当前对象  $this->setConfig(1,'cache')->setConfig('es_','prefix','database');
  */
-    public static  function setConfig(string $val,string $key,string $configName='Config')
+    public static  function setConfig($val,string $key='',string $configName='Config')
     {
         global $CONFIGS;
-        $CONFIGS->{$configName}->{$key} = $val;
+        if(empty($key)){
+            $CONFIGS->{$configName} = $val;
+        }else{
+            $CONFIGS->{$configName}->{$key} = $val;
+        }
         return $CONFIGS;
     }
 }
