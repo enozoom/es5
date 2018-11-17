@@ -89,7 +89,9 @@ abstract class ModelAbstract{
  */
     public function _getByPKID(int $id=0,string $select='*')
     {
-        return $this->db->_get_by_PKID($id,$this->primaryKey,$this->tableName,$select);
+        $where = sprintf('%s = %d', $this->primaryKey, $id);
+        $os = $this->_get($where, $select, '', [1]);
+        return $os[0]??null;
     }
     
 /**
