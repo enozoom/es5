@@ -70,7 +70,15 @@ abstract class ModelAbstract{
         }
         
         empty($orderby) && $orderby = "{$this->primaryKey} DESC";
-        return $this->db->_get($this->tableName,$where,$select,$orderby,$limit);
+        // 转换数字
+        if(!empty($data = $this->db->_get($this->tableName,$where,$select,$orderby,$limit))){
+            foreach($data as $d){
+                foreach($d as $k=>$v){
+                    is_numeric($v) && $d->$k = intval($v);
+                }
+            }
+        }
+        return $data;
     }
     
 /**
