@@ -66,14 +66,14 @@ trait HeaderTrait{
      */
     protected function cors($url='*',$mime='json')
     {
-            if( $url=='*' || $_SERVER['HTTP_ORIGIN'] == $url){
-                    header("Access-Control-Allow-Origin: {$url}");
-                    header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-                    header("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With");
-                    $this->httpMime($mime,true);
-            }else{
-                    http_response_code(503);
-            }
+        if( $url=='*' || $_SERVER['HTTP_ORIGIN'] == $url){
+            header("Access-Control-Allow-Origin: {$url}");
+            header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
+            header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+            $this->httpMime($mime,true);
+        }else{
+            http_response_code(503);
+        }
     }
 /**
  * 跳转
