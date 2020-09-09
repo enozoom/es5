@@ -18,7 +18,21 @@ final class AryStatic{
         }
         return TRUE;
     }
-    
+    /**
+     * $keys中的值对应在$data的键不是空值
+     * @param array $keys
+     * @param array $data
+     * @return bool
+     */
+    public static function unBlank(array $keys, array $data=[]):bool
+    {
+        foreach($keys as $k) {
+            if(!key_exists($k, $data) || empty($data['k'])){
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
     /**
      * 将一组对象中的某两个字段简化成一维键值数组
      * @param array $objs
