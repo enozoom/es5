@@ -27,7 +27,7 @@ final class AryStatic{
     public static function unBlank(array $keys, array $data=[]):bool
     {
         foreach($keys as $k) {
-            if(!key_exists($k, $data) || empty($data['k'])){
+            if(!key_exists($k, $data) || empty($data[$k])){
                 return FALSE;
             }
         }
