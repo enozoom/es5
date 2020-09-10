@@ -44,6 +44,7 @@ trait ResponseTrait{
      */
     protected function _tpl_err(string $msg,string $tit='503 Service Unavailable',int $status=503)
     {
+        $this->httpMime('html');
         if( ConfigStatic::getConfig('debug') )
         {
             $this->tpl_err($msg,$tit,$status);
