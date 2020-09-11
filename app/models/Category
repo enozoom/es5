@@ -41,7 +41,7 @@ class Category extends ModelAbstract
      * @return [obj(category_id=>,category_title=>),..]
      */
     public function _children($category_pid,$recursion=TRUE,$select='category_id,category_title'){
-        $cats = $this->idName($category_pid);
+        $cats = $this->idName($category_pid, $select);
         if($recursion && !empty($cats)){
             foreach ($cats as $cat){
                 $cats = array_merge($cats,$this->_children($cat->category_id));
