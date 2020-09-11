@@ -1,10 +1,11 @@
 <?php
-namespace app\models;
+namespace app\models\Y2020;
 
 use ES\Core\Model\ModelAbstract;
 use ES\Core\Toolkit\AryStatic;
 class Category extends ModelAbstract
 {
+    
     public function _attributes($attr = '')
     {
         $attrs = [
@@ -36,29 +37,27 @@ class Category extends ModelAbstract
     /**
      * 获取某父类下的子类
      * @param int $category_pid
-     * @param bool $recursion 是否递归全部子类
+     * @param bool $recursion 是否递归全部子类，当选项为FALSE时，仅返回直接children部分，不含父类信息。
      * @param string $select 定义返回的字段
      * @return [obj(category_id=>,category_title=>),..]
      */
     public function _children($category_pid,$recursion=TRUE,$select='category_id,category_title'){
-        $cats = $this->idName($category_pid, $select);
-        if($recursion && !empty($cats)){
-            foreach ($cats as $cat){
-                $cats = array_merge($cats,$this->_children($cat->category_id));
+        $children = function(int $category_pid)use(&$children,$select,$recursion){
+            if(!empty($cats = $this->_get("category_pid = {$category_pid}", $select))){
+                if($recursion){
+                    foreach($cats as $c){
+                        empty($cs = $children($c->category_id)) || $c->children = $cs;
+                    }
+                }
             }
+            return $cats;
+        };
+        if($recursion){
+            $c = $category_pid?$this->_getByPKID($category_pid, $select):json_decode('{"category_id":0,"category_title":"无父类"}');
+            $c->children = $children($c->category_id);
+            return $c;
         }
-        return $cats;
-    }
-
-    /**
-     * 根据父级id仅获取id或name字段
-     * @param number $category_pid
-     * @param string $select 定义返回的字段
-     * @return [{category_id=>'',category_name=>''},..]
-     */
-    public function idName($category_pid=0, $select='category_id,category_title')
-    {
-        return $this->_get("category_pid = {$category_pid}", $select, 'category_sequence DESC');
+        return $children($category_pid);
     }
 
     /**
@@ -68,7 +67,8 @@ class Category extends ModelAbstract
      */
     public function simpleIdName($category_pid=0)
     {
-        return AryStatic::obj2kvArray($this->idName($category_pid), 'category_id', 'category_title');
+        $where = "category_pid = {$category_pid}";
+        return AryStatic::obj2kvArray($this->_get($where, 'category_id,category_title'), 'category_id', 'category_title');
     }
     
     public function __category_pids($id=0,$pid=0)
@@ -82,7 +82,6 @@ class Category extends ModelAbstract
             return '';
         }
     }
-
     /**
      * 根据ID递归所有上级，并拼接返回
      * @param number $category_id
