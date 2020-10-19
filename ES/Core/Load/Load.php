@@ -56,7 +56,12 @@ class Load
     
     public function model($cls,$alias=FALSE):Load
     {
-        empty($alias) && $alias = $cls;
+        if(empty($alias)){
+            $alias = $cls;
+            if(($n = strrpos($alias, '\\')) !== FALSE){ // 有命名空间
+                $alias = substr($alias, $n + 1 );
+            }
+        }
         if(!property_exists(ControllerAbstract::getInstance(),$alias)){
             $cls = implode('\\', [basename(APPPATH),$this->dir_model,$this->decodePath($cls)]);
             $_model = new $cls();
