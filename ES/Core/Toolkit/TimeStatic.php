@@ -2,6 +2,16 @@
 namespace ES\Core\Toolkit;
 
 class TimeStatic{
+
+    /**
+     * 获取一个微秒时间
+     * @param number $ms 一个微秒时间，当存在值，则返回当前微秒时间减去该值
+     * @return number
+     */
+    public static function micros($ms=0) {
+        list($msec, $sec) = explode(' ', microtime());
+        return (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000) - $ms;
+    }
     
     /**
      * 格式一个时间戳
